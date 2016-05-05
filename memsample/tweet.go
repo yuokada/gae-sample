@@ -6,6 +6,8 @@ import (
 	"github.com/ChimeraCoder/anaconda"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/urlfetch"
+	"time"
+	"cmd/go/testdata/testinternal3"
 )
 
 
@@ -32,7 +34,8 @@ func TweetHandler(w http.ResponseWriter, r *http.Request) {
 	api := anaconda.NewTwitterApi(atok, asec)
 	c := appengine.NewContext(r)
 	api.HttpClient.Transport = &urlfetch.Transport{Context: c}
-	text := "Hello, worlds!!!"
+	t := time.Now()
+	text := "Hello, worlds!!!" + t.String()
 	api.PostTweet(text, nil)
 	return
 }
