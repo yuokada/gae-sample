@@ -47,3 +47,11 @@ Example:
 later
 - [Y.A.M の 雑記帳: GAE Go で static なサイトをホストする](http://y-anz-m.blogspot.jp/2014/10/gae-go-static.html "Y.A.M の 雑記帳: GAE Go で static なサイトをホストする")
 
+### twitter bot
+- [ChimeraCoder/anaconda: A Go client library for the Twitter 1.1 API][anaconda]
+- [Twitter APIの使い方まとめ](https://syncer.jp/twitter-api-matome "Twitter APIの使い方まとめ")
+
+
+
+
+[anaconda](https://github.com/ChimeraCoder/anaconda "ChimeraCoder/anaconda: A Go client library for the Twitter 1.1 API")

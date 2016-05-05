@@ -18,6 +18,11 @@ func init() {
 	r.HandleFunc("/count", CoutHandler)
 	r.HandleFunc("/", HomeHandler)
 
+	// Admin
+	r.HandleFunc("/admin/", AdminHandler)
+
+	// Bot
+	r.HandleFunc("/tweet", TweetHandler)
 	http.Handle("/", r)
 }
 
