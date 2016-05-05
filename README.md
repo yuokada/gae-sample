@@ -5,7 +5,7 @@ GAE Goの練習
 
 環境変数をセットしてPATHを通しておく。
 
-    $ export   PATH=~/go_appengine:$PATH
+    % export PATH=/usr/local/Cellar/go-app-engine-64/1.9.36/bin/:$PATH
 
 
 ## Development
@@ -50,8 +50,15 @@ later
 ### twitter bot
 - [ChimeraCoder/anaconda: A Go client library for the Twitter 1.1 API][anaconda]
 - [Twitter APIの使い方まとめ](https://syncer.jp/twitter-api-matome "Twitter APIの使い方まとめ")
+- [Twitter Application Management](https://apps.twitter.com/ "Twitter Application Management")
+- [API提供におけるOAuthの役割 #apijp][oauth]
 
+### Qiita
 
+- [Google App Engine &amp; Go で Twitter bot を作ろう - Qiita][]
+- [GAE/Go で Twitter bot を作ろう(改訂版) - Qiita][]
 
-
-[anaconda](https://github.com/ChimeraCoder/anaconda "ChimeraCoder/anaconda: A Go client library for the Twitter 1.1 API")
+[anaconda]: https://github.com/ChimeraCoder/anaconda
+[oauth]: http://www.slideshare.net/tkudo/api-meetup-oauth
+[GAE/Go で Twitter bot を作ろう(改訂版) - Qiita]: (http://qiita.com/utgwkk/items/9913d578142b652c8db5
+[Google App Engine &amp; Go で Twitter bot を作ろう - Qiita]: http://qiita.com/utgwkk/items/fcc89762c03a100b6fcc
