@@ -14,15 +14,14 @@ func init() {
 	r := mux.NewRouter()
 	r.StrictSlash(false)
 
-	// r.HandleFunc("/ng", NGRedirectHandler)
-	r.HandleFunc("/hello", HelloHandler)
+	r.HandleFunc("/hello", HeyHandler)
 	r.HandleFunc("/count", CoutHandler)
 	r.HandleFunc("/", HomeHandler)
 
 	http.Handle("/", r)
 }
 
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
+func HeyHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hey World")
 }
 
