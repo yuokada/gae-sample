@@ -7,7 +7,6 @@ import (
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/urlfetch"
 	"time"
-	"cmd/go/testdata/testinternal3"
 )
 
 
@@ -25,10 +24,10 @@ func TweetHandler(w http.ResponseWriter, r *http.Request) {
 		asec = "ulD1IjHJD8EFEnbqwsJGR0bi33i1PyZdlC83J7KdgVGuP"
 	)
 
-	if r.UserAgent() != "AppEngine-Google; (+http://code.google.com/appengine)" {
+	if r.Header.Get("X-Appengine-Cron") != "true" {
 		return
 	}
-
+	
 	anaconda.SetConsumerKey(ckey)
 	anaconda.SetConsumerSecret(csec)
 	api := anaconda.NewTwitterApi(atok, asec)
