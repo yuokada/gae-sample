@@ -30,7 +30,7 @@ type Secrets struct {
 func GetSeacrets(c context.Context) (*Secrets, error) {
 	log.Printf("%#v\n", c)
 	sec := &Secrets{
-		Type: "twitter",
+		Type:              "twitter",
 		ConsumerKey:       "JRQ43DhDBqI3ZphoqVMcFNY1F",
 		ConsumerSecret:    "i5X6W7CGzDzrk0qxNPew6JUyQwXA8sRm3ZukJ9QYysxOXFjrrq",
 		AccessToken:       "203129378-ACePDK8V0yFsvm4FJt9QbpRiNyhRBcq9Zfan7CvV",

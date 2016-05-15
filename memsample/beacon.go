@@ -11,6 +11,7 @@ import (
 	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/user"
 	// _ "github.com/lestrrat/go-apache-logformat"
+	"fmt"
 )
 
 type RequestInfo struct {
@@ -22,8 +23,9 @@ type RequestInfo struct {
 	Proto         string `datastore:",noindex"`
 	IsHttps       bool   `datastore:",noindex"`
 
-	RequestDate   time.Time
+	RequestDate time.Time
 	// 	Key         *datastore.Key
+	//Id            *datastore.Key
 }
 
 const base64GifPixel = "R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
@@ -32,7 +34,11 @@ var output []byte
 
 func BeaconHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
-	StoreUserInfo(ctx, r)
+	_, err := StoreUserInfo(ctx, r)
+	if err != nil {
+		fmt.Fprintln(w, err)
+		return
+	}
 
 	output, _ = base64.StdEncoding.DecodeString(base64GifPixel)
 	w.Header().Set("Content-Type", "image/gif")
@@ -44,10 +50,10 @@ func BeaconHandler(w http.ResponseWriter, r *http.Request) {
 
 func isSecure(r *http.Request) bool {
 	t := r.TLS
-	if t == nil  {
+	if t == nil {
 		return false
 	}
-	return  true
+	return true
 }
 
 func StoreUserInfo(ctx context.Context, r *http.Request) (bool, error) {
@@ -68,27 +74,41 @@ func StoreUserInfo(ctx context.Context, r *http.Request) (bool, error) {
 		RequestDate:   time.Now(),
 	}
 
-	key := datastore.NewIncompleteKey(ctx, "UserRequest", nil)
-
+	key := datastore.NewIncompleteKey(ctx, "UserRequests", nil)
 	if _, err := datastore.Put(ctx, key, rInfo); err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-// func main() {
-// 	//logger := log.New(os.Stdout, "", 0)
-// 	logger := apachelog.NewApacheLog(os.Stderr,"...")
+// https://godoc.org/google.golang.org/appengine/datastore
+//type Counter struct {
+//	Count int
+//}
 //
-// 	//godaemon.MakeDaemon(&godaemon.DaemonAttr{})
-// 	mux := http.NewServeMux()
-// 	mux.HandleFunc("/hey", HeyHandler)
-// 	mux.HandleFunc("/t", respHandler)
-//
-// 	fmt.Println("Access: http://localhost:8080/*")
-// 	err := http.ListenAndServe(":8080", apachelog.WrapLoggingWriter(mux, logger))
-// 	//err := http.ListenAndServe(":8080", mux)
-// 	if err != nil {
-// 		log.Fatalln(err)
-// 	}
-// }
+//func inc(ctx context.Context, key *datastore.Key) (int, error) {
+//	var x Counter
+//	if err := datastore.Get(ctx, key, &x); err != nil && err != datastore.ErrNoSuchEntity {
+//		return 0, err
+//	}
+//	x.Count++
+//	if _, err := datastore.Put(ctx, key, &x); err != nil {
+//		return 0, err
+//	}
+//	return x.Count, nil
+//}
+//func handle(w http.ResponseWriter, r *http.Request) {
+//	ctx := appengine.NewContext(r)
+//	var count int
+//	err := datastore.RunInTransaction(ctx, func(ctx context.Context) error {
+//		var err1 error
+//		count, err1 = inc(ctx, datastore.NewKey(ctx, "Counter", "singleton", 0, nil))
+//		return err1
+//	}, nil)
+//	if err != nil {
+//		serveError(ctx, w, err)
+//		return
+//	}
+//	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+//	fmt.Fprintf(w, "Count=%d", count)
+//}
