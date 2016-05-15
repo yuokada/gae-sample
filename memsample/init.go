@@ -18,11 +18,19 @@ func init() {
 	r.HandleFunc("/count", CoutHandler)
 	r.HandleFunc("/", HomeHandler)
 
+	// Beacon
+	track := r.PathPrefix("/t").Subrouter()
+	track.HandleFunc("/b", BeaconHandler)
+
 	// Admin
-	r.HandleFunc("/admin/", AdminHandler)
+	sub := r.PathPrefix("/admin").Subrouter()
+	sub.HandleFunc("/", AdminHandler)
 
 	// Bot
-	r.HandleFunc("/tweet", TweetHandler)
+	bot := r.PathPrefix("/bot").Subrouter()
+	bot.HandleFunc("/tweet", TweetHandler)
+	bot.HandleFunc("/store", DStoreHandler) // debug now
+
 	http.Handle("/", r)
 }
 
