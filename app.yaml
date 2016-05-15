@@ -1,8 +1,9 @@
 application: yama-stage
-version: 5
+version: 6
 runtime: go
 api_version: go1
 
+# @see: https://cloud.google.com/appengine/docs/go/config/appref
 handlers:
 
   - url: /favicon.ico
@@ -15,9 +16,11 @@ handlers:
 
   - url: /admin/.*
     script: _go_app
-    login: required
+    login: admin
+#    secure: always
 
   - url: /.*
     script: _go_app
     #login: required
+
 

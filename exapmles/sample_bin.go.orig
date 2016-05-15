@@ -1,0 +1,49 @@
+package main
+
+import (
+	"bytes"
+	"encoding/binary"
+	"fmt"
+	"math"
+
+	"os"
+	"bufio"
+)
+
+type BigO string
+
+func main() {
+	buf := new(bytes.Buffer)
+	var pi float64 = math.Pi
+	err := binary.Write(buf, binary.LittleEndian, pi)
+	if err != nil {
+		fmt.Println("binary.Write failed:", err)
+	}
+	fmt.Printf("% x\n", buf.Bytes())
+
+
+	// ファイルを書き込みモードでオープン(ファイルがなかったら作成する)
+	wf, _ := os.OpenFile("goodbin.txt", os.O_WRONLY|os.O_CREATE, 0664)
+	defer  wf.Close()
+
+	// Writerを書き込みモードでオープン
+	//binary.Write(buf, binary.LittleEndian, 99.3)
+	for i := 0; i < 100; i++ {
+		binary.Write(buf, binary.LittleEndian, BigO("\nfoobar\n"))
+		s := fmt.Sprintf("num is %d\n", i)
+		binary.Write(buf, binary.LittleEndian, s)
+		wf.Write(buf.Bytes())
+	}
+	writer := bufio.NewWriter(wf)
+	//fmt.Fprintln(writer, buf.)
+
+	//err = binary.Write(wf, binary.LittleEndian, []byte("good binary writer"))
+	//if err != nil {
+	//	fmt.Println("binary.Write failed:", err)
+	//}
+	writer.Flush()
+	// http://d.hatena.ne.jp/yuheiomori0718/20130923/1379929171
+	// http://qiita.com/ymko/items/54d6f377d259fd8e3f49
+
+	// http://golang-examples.tumblr.com/post/80978436799/open-a-file-for-writing
+}
