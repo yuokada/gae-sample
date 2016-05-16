@@ -1,5 +1,5 @@
 cron :
   - description : tweeting per hour
     url : /tweet
-    schedule : every 1 hours from 0:00 to 23:00
+    schedule : every 6 hours from 0:00 to 23:00
     timezone : Asia/Tokyo

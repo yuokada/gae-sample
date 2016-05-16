@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Register Seacrets</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="alert alert-warning" role="alert">
+    <p>Unknown Status!!</p>
+</div>
+<div class="alert alert-danger" role="alert">
+    <p>Register failed!!</p>
+</div>
+<!-- http://qiita.com/zaburo/items/8983993d173c51cb3827 -->
+<!-- http://getbootstrap.com/components/#alerts-links -->
+<!--
+{{if true}}
+<div class="alert alert-success" role="alert">
+    <p>Register Success!!</p>
+</div>
+{{end}}
+-->
+<div class="container">
+    <form method="post">
+        <div class="form-group">
+            <label>AccountType</label>
+            <select name="accout_type" class="form-control">
+                <option value="twitter">Twitter</option>
+                <option value="facebook" disabled>Facebook</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>ConsumerKey</label>
+            <input type="text" name="consumer_key" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>ConsumerSecret</label>
+            <input type="text" name="consumer_secret" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>AccessToken</label>
+            <input type="text" name="access_token" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>AccessTokenSecret</label>
+            <input type="text" name="access_token_secret" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-default navbar-btn">Regist</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 package memsample
 
 import (
+	"fmt"
 	"encoding/base64"
 	"io"
 	"net/http"
@@ -9,9 +10,9 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/datastore"
-	"google.golang.org/appengine/user"
+	//"google.golang.org/appengine/user"
 	// _ "github.com/lestrrat/go-apache-logformat"
-	"fmt"
+	"github.com/pkg/errors"
 )
 
 type RequestInfo struct {
@@ -34,9 +35,9 @@ var output []byte
 
 func BeaconHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
-	_, err := StoreUserInfo(ctx, r)
+	_, err := StoreUserInfo(ctx, w,r)
 	if err != nil {
-		fmt.Fprintln(w, err)
+		errors.Fprint(w, err)
 		return
 	}
 
@@ -56,13 +57,13 @@ func isSecure(r *http.Request) bool {
 	return true
 }
 
-func StoreUserInfo(ctx context.Context, r *http.Request) (bool, error) {
+func StoreUserInfo(ctx context.Context, w http.ResponseWriter, r *http.Request) (bool, error) {
 	// get User Infomation
-	_, err := user.CurrentOAuth(ctx, "")
-	if err != nil {
-		// http.Error(w, "OAuth Authorization header required", http.StatusUnauthorized)
-		return false, err
-	}
+	//_, err := user.CurrentOAuth(ctx, "")
+	//if err != nil {
+	//	// http.Error(w, "OAuth Authorization header required", http.StatusUnauthorized)
+	//	return  false, errors.Wrap(err, "Store Failed")
+	//}
 
 	rInfo := &RequestInfo{
 		UserAgent:     r.UserAgent(),
@@ -74,9 +75,18 @@ func StoreUserInfo(ctx context.Context, r *http.Request) (bool, error) {
 		RequestDate:   time.Now(),
 	}
 
-	key := datastore.NewIncompleteKey(ctx, "UserRequests", nil)
-	if _, err := datastore.Put(ctx, key, rInfo); err != nil {
-		return false, err
+	terr := datastore.RunInTransaction(ctx, func(ctx context.Context) error {
+		key := datastore.NewIncompleteKey(ctx, "UserRequests", nil)
+		//key := datastore.NewKey(ctx, "UserRequests", "tweetID", 0, nil)
+
+		if _, err := datastore.Put(ctx, key, rInfo); err != nil {
+			fmt.Fprintln(w, err)
+			return errors.Wrap(err, "Transaction Failed!")
+		}
+		return nil
+	}, nil)
+	if terr != nil {
+		return false, errors.Wrap(terr, "Store Failed!")
 	}
 	return true, nil
 }

@@ -25,6 +25,8 @@ func init() {
 	// Admin
 	sub := r.PathPrefix("/admin").Subrouter()
 	sub.HandleFunc("/", AdminHandler)
+	sub.HandleFunc("/register", RegisterSeacretsHandler)
+	r.HandleFunc("/register", RegisterSeacretsHandler)
 
 	// Bot
 	bot := r.PathPrefix("/bot").Subrouter()

@@ -10,6 +10,7 @@ import (
 	"google.golang.org/appengine/urlfetch"
 	"log"
 	"time"
+	"html/template"
 )
 
 // https://cloud.google.com/appengine/docs/go/datastore/creating-entities
@@ -25,6 +26,29 @@ type Secrets struct {
 	ConsumerSecret    string
 	AccessToken       string
 	AccessTokenSecret string
+}
+
+// http://stackoverflow.com/questions/9573644/go-appengine-how-to-structure-templates-for-application
+// http://blog.inagaki.in/?p=148
+var listTmpl = template.Must(template.ParseFiles("templates/form.html"))
+
+func RegisterSeacretsHandler(w http.ResponseWriter, r *http.Request){
+	if err := r.ParseForm(); err != nil {
+		// TODO: parse form
+		fmt.Println(w, err)
+		return
+	}
+	//r.FormValue("key")
+	//fmt.Println(r.Form["url_long"])
+	//for k, v := range r.Form {
+	//	fmt.Println("key:", k)
+	//	fmt.Println("val:", strings.Join(v, ""))
+	//}
+
+	if err := listTmpl.Execute(w, nil); err != nil{
+		fmt.Fprintln(w, err)
+	}
+	return
 }
 
 func GetSeacrets(c context.Context) (*Secrets, error) {
