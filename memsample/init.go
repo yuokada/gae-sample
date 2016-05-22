@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/pkg/errors"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/memcache"
 )
@@ -14,6 +15,7 @@ func init() {
 	r := mux.NewRouter()
 	r.StrictSlash(false)
 
+	// GAE Practice Entrypoint and Handlers
 	r.HandleFunc("/hello", HeyHandler)
 	r.HandleFunc("/count", CoutHandler)
 	r.HandleFunc("/", HomeHandler)
@@ -36,15 +38,18 @@ func init() {
 	http.Handle("/", r)
 }
 
+// Hello World Handler: sample code
 func HeyHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hey World")
 }
 
+// Redirect to another page: sample code
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	// https://gist.github.com/hSATAC/5343225
 	http.Redirect(w, r, "http://www.yahoo.co.jp", 301)
 }
 
+// Access Counter : memcache sample code
 func CoutHandler(w http.ResponseWriter, r *http.Request) {
 	// https://cloud.google.com/appengine/docs/go/memcache/using
 	k := "Counters"
@@ -59,7 +64,7 @@ func CoutHandler(w http.ResponseWriter, r *http.Request) {
 		current, err = strconv.Atoi(string(item0.Value))
 		if err != nil {
 			//fmt.Fprintf(w, "Here? [% s]\n", string(item0.Value[:]))
-			fmt.Fprintln(w, err)
+			errors.Fprint(w, err)
 			return
 		}
 	} else {
@@ -76,10 +81,9 @@ func CoutHandler(w http.ResponseWriter, r *http.Request) {
 	if err := memcache.Set(c, item); err == memcache.ErrCacheMiss {
 		fmt.Fprintf(w, "%s\n", memcache.ErrCacheMiss)
 	} else if err != nil {
-		fmt.Fprintln(w, err)
+		errors.Fprint(w, err)
 	} else {
 		fmt.Fprintf(w, "%d <= ", current)
 		fmt.Fprintln(w, "Count up!")
 	}
-	// http://localhost:8000/memcache?key=Counters
 }

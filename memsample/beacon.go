@@ -1,8 +1,8 @@
 package memsample
 
 import (
-	"fmt"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -33,7 +33,7 @@ var output []byte
 
 func BeaconHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
-	_, err := storeUserInfo(ctx, w,r)
+	_, err := storeUserInfo(ctx, w, r)
 	if err != nil {
 		errors.Fprint(w, err)
 		return

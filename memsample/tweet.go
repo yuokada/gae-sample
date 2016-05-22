@@ -8,9 +8,9 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/urlfetch"
+	"html/template"
 	"log"
 	"time"
-	"html/template"
 )
 
 // https://cloud.google.com/appengine/docs/go/datastore/creating-entities
@@ -32,7 +32,7 @@ type Secrets struct {
 // http://blog.inagaki.in/?p=148
 var listTmpl = template.Must(template.ParseFiles("templates/form.html"))
 
-func RegisterSeacretsHandler(w http.ResponseWriter, r *http.Request){
+func RegisterSeacretsHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		// TODO: parse form
 		fmt.Println(w, err)
@@ -45,7 +45,7 @@ func RegisterSeacretsHandler(w http.ResponseWriter, r *http.Request){
 	//	fmt.Println("val:", strings.Join(v, ""))
 	//}
 
-	if err := listTmpl.Execute(w, nil); err != nil{
+	if err := listTmpl.Execute(w, nil); err != nil {
 		fmt.Fprintln(w, err)
 	}
 	return
